@@ -4,6 +4,7 @@
  */
 package jpcap;
 
+import java.awt.Font;
 import java.io.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,6 +21,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import jpcap.packet.ICMPPacket;
 import jpcap.packet.Packet;
 import jpcap.packet.TCPPacket;
 import jpcap.packet.UDPPacket;
@@ -116,6 +118,8 @@ public class NewJFrame3 extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         intervalTextField = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        resetFilterButton = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jpcap/images/light_fawn_and_blue_waves-1280x800.jpg"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -154,7 +158,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
                 saveButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 440, 60, 20));
+        getContentPane().add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(673, 440, -1, 20));
 
         jLabel6.setForeground(new java.awt.Color(204, 204, 255));
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 20, 20));
@@ -165,7 +169,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
                 captureButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(captureButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 390, 120, 30));
+        getContentPane().add(captureButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 390, 120, 30));
 
         interfaceListCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select interface" }));
         interfaceListCombo.addActionListener(new java.awt.event.ActionListener() {
@@ -182,7 +186,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
                 stopButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 390, 120, 30));
+        getContentPane().add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 390, 120, 30));
 
         loadButton.setText("Load previous session");
         loadButton.addActionListener(new java.awt.event.ActionListener() {
@@ -193,14 +197,14 @@ public class NewJFrame3 extends javax.swing.JFrame {
         getContentPane().add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 140, -1));
 
         jLabel4.setText("Save session");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 410, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 420, 80, -1));
 
         saveTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveTextFieldActionPerformed(evt);
             }
         });
-        getContentPane().add(saveTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 440, 70, -1));
+        getContentPane().add(saveTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 440, 70, -1));
 
         totalCountLabel.setText(packet_count);
         getContentPane().add(totalCountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 390, -1, -1));
@@ -236,9 +240,12 @@ public class NewJFrame3 extends javax.swing.JFrame {
                 filterButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(filterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 390, 120, -1));
+        getContentPane().add(filterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 320, 120, -1));
 
         jLabel1.setText("Capture Filter");
+        Font f = jLabel1.getFont();
+        // bold
+        jLabel1.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 60, -1, -1));
 
         jLabel12.setText("UDP");
@@ -292,10 +299,30 @@ public class NewJFrame3 extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 190, -1, 20));
 
         intervalTextField.setText("0");
+        intervalTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                intervalTextFieldActionPerformed(evt);
+            }
+        });
         getContentPane().add(intervalTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 220, 40, 20));
 
         jLabel10.setText("ms");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 220, 20, 20));
+
+        resetFilterButton.setText("CLEAR FILTERS");
+        resetFilterButton.setEnabled(false);
+        resetFilterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetFilterButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(resetFilterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 350, 120, -1));
+
+        jLabel11.setText("Session Filter");
+        Font f1 = jLabel11.getFont();
+        // bold
+        jLabel11.setFont(f1.deriveFont(f1.getStyle() | Font.BOLD));
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 290, -1, -1));
 
         setSize(new java.awt.Dimension(761, 750));
         setLocationRelativeTo(null);
@@ -330,6 +357,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
                      JOptionPane.showMessageDialog(null,"Please select an interface");
             }
             else{
+            filterButton.setEnabled(false);
             httpRadioButtonC.setEnabled(false);
             tcpRadioButtonC.setEnabled(false);
             udpRadioButtonC.setEnabled(false);
@@ -425,6 +453,8 @@ public class NewJFrame3 extends javax.swing.JFrame {
              tcpCountLabel.setText(String.valueOf(cp0.tcpCount));
              httpCountLabel.setText(String.valueOf(cp0.httpCount));
              icmpCountLabel.setText(String.valueOf(cp0.icmpCount));
+             filterButton.setEnabled(true);
+             
                 
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(NewJFrame3.class.getName()).log(Level.SEVERE, null, ex);
@@ -446,6 +476,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
 
        sessionFilter sf = new sessionFilter(obj,m); //new instance of sessionFilter frame, This provides access to session filter options
        sf.setVisible(true);
+       resetFilterButton.setEnabled(true);
     }//GEN-LAST:event_filterButtonActionPerformed
 
     private void udpRadioButtonCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpRadioButtonCActionPerformed
@@ -467,6 +498,27 @@ public class NewJFrame3 extends javax.swing.JFrame {
     private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
         // TODO add your handling code here:
     }//GEN-LAST:event_formComponentHidden
+
+    private void intervalTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intervalTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_intervalTextFieldActionPerformed
+
+    private void resetFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetFilterButtonActionPerformed
+
+        ArrayList resObj = obj;
+        
+        while (m.getRowCount() > 0){
+                for (int i = 0; i < m.getRowCount(); i++){
+                    m.removeRow(i);
+                }
+            }  //remove all rows (if any) before populating table
+        
+        for (int r = 0; r < obj.size(); r++)
+        {
+            Packet pr = (Packet)resObj.get(r);
+            cp0.populate_table(pr,m,r);
+        }
+    }//GEN-LAST:event_resetFilterButtonActionPerformed
 
 
     //method to populate the text box with details of a selected packet
@@ -542,6 +594,36 @@ public class NewJFrame3 extends javax.swing.JFrame {
             jTextArea1.append("Protocol: "+protocol+ "\n\n");
             
             byte[] data = (udpPckt.data);
+            jTextArea1.append("Data: ");
+            for (int i = 0; i < data.length; i++)
+            {
+              jTextArea1.append(String.valueOf(data[i] +" "));
+            }
+            
+            jTextArea1.append("\n");
+        }
+        else if (p instanceof ICMPPacket){
+            
+            ICMPPacket icmpPckt =(ICMPPacket)p ;
+            
+            String srcIP = String.valueOf(icmpPckt.src_ip);
+            String destIP = String.valueOf(icmpPckt.dst_ip);
+            String protocol = String.valueOf(icmpPckt.protocol);
+            int sequence = icmpPckt.seq;
+            
+            byte[] header = icmpPckt.header;
+            jTextArea1.append("Header: ");
+            for (int k = 0; k < header.length; k++)
+            {
+              jTextArea1.append(String.valueOf(header[k] +" "));
+            }
+              
+            jTextArea1.append("\nSource ip: "+srcIP+ "\n");
+            jTextArea1.append("Destination ip: "+destIP+ "\n");
+            jTextArea1.append("Sequence: "+sequence+ "\n");
+            jTextArea1.append("Protocol: "+protocol+ "\n\n");
+            
+            byte[] data = (icmpPckt.data);
             jTextArea1.append("Data: ");
             for (int i = 0; i < data.length; i++)
             {
@@ -720,6 +802,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
     private javax.swing.JFrame jFrame3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
@@ -736,6 +819,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
     public javax.swing.JTable jTable1;
     public javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton loadButton;
+    private javax.swing.JButton resetFilterButton;
     private javax.swing.JButton saveButton;
     private javax.swing.JTextField saveTextField;
     private javax.swing.JButton stopButton;
