@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
@@ -67,7 +68,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
         NetworkInterface   [] devices = JpcapCaptor.getDeviceList();
  
         for (NetworkInterface device : devices){ //initialize network device list for combobox
-            intefaceListCombo.addItem(device.name);    //add the interface list to the drop down menu
+            interfaceListCombo.addItem(device.name);    //add the interface list to the drop down menu
         }  
     }
     
@@ -88,7 +89,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
         saveButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         captureButton = new javax.swing.JButton();
-        intefaceListCombo = new javax.swing.JComboBox();
+        interfaceListCombo = new javax.swing.JComboBox();
         stopButton = new javax.swing.JButton();
         loadButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -112,6 +113,9 @@ public class NewJFrame3 extends javax.swing.JFrame {
         httpRadioButtonC = new javax.swing.JRadioButton();
         icmpRadioButtonC = new javax.swing.JRadioButton();
         tcpRadioButtonC = new javax.swing.JRadioButton();
+        jLabel5 = new javax.swing.JLabel();
+        intervalTextField = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jpcap/images/light_fawn_and_blue_waves-1280x800.jpg"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -163,13 +167,13 @@ public class NewJFrame3 extends javax.swing.JFrame {
         });
         getContentPane().add(captureButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 390, 120, 30));
 
-        intefaceListCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select interface" }));
-        intefaceListCombo.addActionListener(new java.awt.event.ActionListener() {
+        interfaceListCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select interface" }));
+        interfaceListCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                intefaceListComboActionPerformed(evt);
+                interfaceListComboActionPerformed(evt);
             }
         });
-        getContentPane().add(intefaceListCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 210, -1));
+        getContentPane().add(interfaceListCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 210, -1));
 
         stopButton.setText("STOP CAPTURE");
         stopButton.setEnabled(false);
@@ -226,6 +230,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 460, 90, 20));
 
         filterButton.setText("FILTER SESSION");
+        filterButton.setEnabled(false);
         filterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filterButtonActionPerformed(evt);
@@ -283,6 +288,15 @@ public class NewJFrame3 extends javax.swing.JFrame {
         });
         getContentPane().add(tcpRadioButtonC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 110, -1, 20));
 
+        jLabel5.setText("capture interval:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 190, -1, 20));
+
+        intervalTextField.setText("0");
+        getContentPane().add(intervalTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 220, 40, 20));
+
+        jLabel10.setText("ms");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 220, 20, 20));
+
         setSize(new java.awt.Dimension(761, 750));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -298,7 +312,8 @@ public class NewJFrame3 extends javax.swing.JFrame {
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(obj);
                 oos.close();
-                fos.close();                  
+                fos.close();
+                JOptionPane.showMessageDialog(null,"Your session has been saved successfully.");
             }
             catch (IOException ex) {
                 Logger.getLogger(NewJFrame3.class.getName()).log(Level.SEVERE, null, ex);
@@ -307,10 +322,21 @@ public class NewJFrame3 extends javax.swing.JFrame {
 
     
     private void captureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_captureButtonActionPerformed
+            PromptSupport.setPrompt("Save as", saveTextField);
+            int c = interfaceListCombo.getSelectedIndex();
 
+            if (c == 0)
+            {
+                     JOptionPane.showMessageDialog(null,"Please select an interface");
+            }
+            else{
+            httpRadioButtonC.setEnabled(false);
+            tcpRadioButtonC.setEnabled(false);
+            udpRadioButtonC.setEnabled(false);
+            icmpRadioButtonC.setEnabled(false);
+            intervalTextField.setEnabled(false);
             captureButton.setEnabled(false); //once a capture is started the button is disabled
             stopButton.setEnabled(true);       //the stop buttn is enabled
-            
             //variables from the CapturePackets to monitor the number of packets captured. all initialized to 0.
             cp0.tcpCount = 0;
             cp0.udpCount = 0;
@@ -328,19 +354,25 @@ public class NewJFrame3 extends javax.swing.JFrame {
             obj.clear(); 
             cancelled = false; //set flag to false controls the while loop
             pcw.start(); //start a thread to capture packets
-         
+            } 
     }//GEN-LAST:event_captureButtonActionPerformed
 
-    private void intefaceListComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intefaceListComboActionPerformed
+    private void interfaceListComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interfaceListComboActionPerformed
   
         
-    }//GEN-LAST:event_intefaceListComboActionPerformed
+    }//GEN-LAST:event_interfaceListComboActionPerformed
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-        
+        PromptSupport.setPrompt("Save as", saveTextField);
         captureButton.setEnabled(true);
         cancelled = true;
         stopButton.setEnabled(false);
+        filterButton.setEnabled(true);
+        httpRadioButtonC.setEnabled(true);
+        tcpRadioButtonC.setEnabled(true);
+        udpRadioButtonC.setEnabled(true);
+        icmpRadioButtonC.setEnabled(true);
+        intervalTextField.setEnabled(true);
         
     }//GEN-LAST:event_stopButtonActionPerformed
 
@@ -532,7 +564,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
                     
                     NetworkInterface [] devices = JpcapCaptor.getDeviceList();
                     
-                    int index = (intefaceListCombo.getSelectedIndex()-1);                   //open network interfaces
+                    int index = (interfaceListCombo.getSelectedIndex()-1);                   //open network interfaces
                     int count = 0;
                     JpcapCaptor captor =JpcapCaptor.openDevice(devices[index], 65535, false, 20);
                     
@@ -558,7 +590,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
 
                             count++;
                             updateGUI(packets,count); //updateGUI method is used to update the GUI on the Event Dispatcher Thread
-                            Thread.sleep(50);         //pause between each capture. can be changed
+                            Thread.sleep(Integer.parseInt(intervalTextField.getText()));         //pause between each capture. can be changed
                             obj.add(packets);  //add packets to obj ArrayList
                             
                         }
@@ -612,11 +644,12 @@ public class NewJFrame3 extends javax.swing.JFrame {
         NewJFrame3 nf1 = new NewJFrame3();
         
         PromptSupport.setPrompt("Save as", nf1.saveTextField);
+
         
         NetworkInterface   [] devices = JpcapCaptor.getDeviceList();
  
             for (NetworkInterface device : devices) {
-                (nf1.intefaceListCombo).addItem(device.name);
+                (nf1.interfaceListCombo).addItem(device.name);
             }
         
         
@@ -676,7 +709,8 @@ public class NewJFrame3 extends javax.swing.JFrame {
     private javax.swing.JRadioButton httpRadioButtonC;
     private javax.swing.JLabel icmpCountLabel;
     private javax.swing.JRadioButton icmpRadioButtonC;
-    private javax.swing.JComboBox intefaceListCombo;
+    private javax.swing.JComboBox interfaceListCombo;
+    private javax.swing.JTextField intervalTextField;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialog2;
     private javax.swing.JDialog jDialog3;
@@ -685,12 +719,14 @@ public class NewJFrame3 extends javax.swing.JFrame {
     private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     public static javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

@@ -67,6 +67,11 @@ public class sessionFilter extends javax.swing.JFrame {
 
         buttonGroup1.add(icmpRadioButton);
         icmpRadioButton.setText("ICMP");
+        icmpRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                icmpRadioButtonActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(tcpRadioButton);
         tcpRadioButton.setText("TCP");
@@ -86,6 +91,11 @@ public class sessionFilter extends javax.swing.JFrame {
 
         buttonGroup1.add(udpRadioButton);
         udpRadioButton.setText("UDP");
+        udpRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                udpRadioButtonActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("FILTERS");
 
@@ -207,7 +217,10 @@ public class sessionFilter extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void httpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_httpRadioButtonActionPerformed
-        // TODO add your handling code here:
+        
+        
+        sportTextField.setEditable(true);
+        dportTextField.setEditable(true);
     }//GEN-LAST:event_httpRadioButtonActionPerformed
 
     private void dportTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dportTextFieldActionPerformed
@@ -216,7 +229,8 @@ public class sessionFilter extends javax.swing.JFrame {
 
   
     private void tcpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tcpRadioButtonActionPerformed
-        // TODO add your handling code here:
+        sportTextField.setEditable(true);
+        dportTextField.setEditable(true);
     }//GEN-LAST:event_tcpRadioButtonActionPerformed
 
     private void setFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setFilterButtonActionPerformed
@@ -323,6 +337,8 @@ public class sessionFilter extends javax.swing.JFrame {
                          }
                          
                          if (icmpRadioButton.isSelected())
+                             
+                             
                              if(cp5.isIcmp(p)) cp5.populate_table(p,m,x+1);
                     }
                          
@@ -330,6 +346,18 @@ public class sessionFilter extends javax.swing.JFrame {
 
             dispose();
     }//GEN-LAST:event_setFilterButtonActionPerformed
+
+    private void icmpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_icmpRadioButtonActionPerformed
+        // TODO add your handling code here:
+        sportTextField.setEditable(false);
+        dportTextField.setEditable(false);
+    }//GEN-LAST:event_icmpRadioButtonActionPerformed
+
+    private void udpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpRadioButtonActionPerformed
+        // TODO add your handling code here:
+        sportTextField.setEditable(true);
+        dportTextField.setEditable(true);
+    }//GEN-LAST:event_udpRadioButtonActionPerformed
 
 
     /**
