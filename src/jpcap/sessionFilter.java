@@ -8,6 +8,7 @@ package jpcap;
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import jpcap.packet.ICMPPacket;
 import jpcap.packet.Packet;
 import jpcap.packet.TCPPacket;
 import jpcap.packet.UDPPacket;
@@ -60,10 +61,18 @@ public class sessionFilter extends javax.swing.JFrame {
         setFilterButton = new javax.swing.JButton();
         sipTextField = new javax.swing.JTextField();
         dipTextField = new javax.swing.JTextField();
+        ipCheckBox = new javax.swing.JCheckBox();
+        jLabel9 = new javax.swing.JLabel();
+        portCheckBox = new javax.swing.JCheckBox();
+        jLabel10 = new javax.swing.JLabel();
+        piCheckBox = new javax.swing.JCheckBox();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("PROTOCOL:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, 40));
 
         buttonGroup1.add(icmpRadioButton);
         icmpRadioButton.setText("ICMP");
@@ -72,6 +81,7 @@ public class sessionFilter extends javax.swing.JFrame {
                 icmpRadioButtonActionPerformed(evt);
             }
         });
+        getContentPane().add(icmpRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, -1, -1));
 
         buttonGroup1.add(tcpRadioButton);
         tcpRadioButton.setText("TCP");
@@ -80,6 +90,7 @@ public class sessionFilter extends javax.swing.JFrame {
                 tcpRadioButtonActionPerformed(evt);
             }
         });
+        getContentPane().add(tcpRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, -1, -1));
 
         buttonGroup1.add(httpRadioButton);
         httpRadioButton.setText("HTTP");
@@ -88,6 +99,7 @@ public class sessionFilter extends javax.swing.JFrame {
                 httpRadioButtonActionPerformed(evt);
             }
         });
+        getContentPane().add(httpRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 59, -1));
 
         buttonGroup1.add(udpRadioButton);
         udpRadioButton.setText("UDP");
@@ -96,16 +108,22 @@ public class sessionFilter extends javax.swing.JFrame {
                 udpRadioButtonActionPerformed(evt);
             }
         });
+        getContentPane().add(udpRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 60, -1, -1));
 
         jLabel2.setText("FILTERS");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 21, -1, -1));
 
         jLabel3.setText("PORT:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 123, -1, -1));
 
         jLabel4.setText("Dst Port:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(248, 123, -1, -1));
 
         jLabel5.setText("Src Port:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 123, -1, -1));
 
         sportTextField.setText("");
+        getContentPane().add(sportTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(141, 120, 34, -1));
 
         dportTextField.setText("");
         dportTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -113,12 +131,16 @@ public class sessionFilter extends javax.swing.JFrame {
                 dportTextFieldActionPerformed(evt);
             }
         });
+        getContentPane().add(dportTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(301, 120, 34, -1));
 
         jLabel6.setText("IP ADDRESS:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 199, -1, -1));
 
         jLabel7.setText("Src IP:");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(91, 199, -1, -1));
 
         jLabel8.setText("Dst IP:");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, 199, -1, -1));
 
         setFilterButton.setText("SET FILTERS");
         setFilterButton.addActionListener(new java.awt.event.ActionListener() {
@@ -126,93 +148,45 @@ public class sessionFilter extends javax.swing.JFrame {
                 setFilterButtonActionPerformed(evt);
             }
         });
+        getContentPane().add(setFilterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(138, 267, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(httpRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tcpRadioButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(udpRadioButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(icmpRadioButton)
-                        .addGap(80, 80, 80))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(46, 46, 46))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(14, 14, 14)))
-                                .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(sportTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(26, 26, 26)
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dportTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(setFilterButton))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(121, 121, 121)
-                                .addComponent(sipTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dipTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(httpRadioButton)
-                    .addComponent(tcpRadioButton)
-                    .addComponent(udpRadioButton)
-                    .addComponent(icmpRadioButton))
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel5)
-                    .addComponent(sportTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(dportTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(sipTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dipTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                .addComponent(setFilterButton)
-                .addGap(57, 57, 57))
-        );
+        sipTextField.setText("");
+        getContentPane().add(sipTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 196, 82, -1));
 
-        setSize(new java.awt.Dimension(365, 339));
+        dipTextField.setText("");
+        getContentPane().add(dipTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(303, 196, 82, -1));
+
+        ipCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ipCheckBoxActionPerformed(evt);
+            }
+        });
+        getContentPane().add(ipCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(229, 195, -1, -1));
+
+        jLabel9.setText("AND");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(229, 222, -1, -1));
+
+        portCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                portCheckBoxActionPerformed(evt);
+            }
+        });
+        getContentPane().add(portCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, 120, -1, -1));
+
+        jLabel10.setText("AND");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, -1, 20));
+
+        piCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                piCheckBoxActionPerformed(evt);
+            }
+        });
+        getContentPane().add(piCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
+
+        jLabel11.setText("AND");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, 146, -1, -1));
+
+        setSize(new java.awt.Dimension(411, 367));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -240,112 +214,172 @@ public class sessionFilter extends javax.swing.JFrame {
                 for (int i = 0; i < m.getRowCount(); i++){
                     m.removeRow(i);
                 }
-            }
+             }
             //remove all rows (if any) before populating table
              int sPort = -1;  
              int dPort = -1;
+             String sIp = "";
+             String dIp = "";
              
              if (!"".equals(sportTextField.getText()))
                 sPort = Integer.parseInt(sportTextField.getText());
              
              if (!"".equals(dportTextField.getText()))
                 dPort = Integer.parseInt(dportTextField.getText());
+             
+             if (!"".equals(sipTextField.getText()))
+             {
+                sIp = (sipTextField.getText());
+                sIp = "/" + sIp;
 
-        
+             }
+             
+             if (!"".equals(dipTextField.getText()))
+             {
+                dIp= (dipTextField.getText());
+                dIp = "/" + dIp;
+             }
+
+             
              //filter packets according to the selections/filters set by the user.
+             
+             
             
                 for(int x=0; x < al1.size();x++)
                 {
+                    
                     Packet p = (Packet) al1.get(x);
 
-                    { //sort by protocol
+                     //sort by protocol
                         if (httpRadioButton.isSelected())
                         {    
+                           
                             if(cp5.isHttp(p)) 
                             {
-                                if ((sPort != -1) && (dPort != -1))
+                                TCPPacket httpP = (TCPPacket)p;
+                                
+                                if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
                                 {
-                                    if((((TCPPacket)p).src_port == sPort) && (((TCPPacket)p).dst_port == dPort))
-                                    cp5.populate_table(p, m,x+1);
+                                    if ( ((httpP.src_port == sPort) && (httpP.dst_port == dPort)) && ((String.valueOf(httpP.src_ip)).equals(sIp) && (String.valueOf(httpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
                                 }
-                                else if (sPort == -1 && dPort != -1)
-                                {
-                                    if(((TCPPacket)p).dst_port == dPort)
-                                    cp5.populate_table(p, m,x+1);
+                                else if (!portCheckBox.isSelected() && !ipCheckBox.isSelected() && piCheckBox.isSelected())
+                                {        if ( ((httpP.src_port == sPort) || (httpP.dst_port == dPort)) && ((String.valueOf(httpP.src_ip)).equals(sIp) || (String.valueOf(httpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
                                 }
-                                else if (sPort != -1 && dPort == -1)
-                                {
-                                    if(((TCPPacket)p).src_port == sPort)
-                                    cp5.populate_table(p, m,x+1);
+                                else if (!portCheckBox.isSelected() && !ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((httpP.src_port == sPort) || (httpP.dst_port == dPort)) || ((String.valueOf(httpP.src_ip)).equals(sIp) || (String.valueOf(httpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
                                 }
-                                else
-                                    cp5.populate_table(p, m,x+1);
-                            }
+                                else if (portCheckBox.isSelected() && !ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((httpP.src_port == sPort) && (httpP.dst_port == dPort)) || ((String.valueOf(httpP.src_ip)).equals(sIp) || (String.valueOf(httpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                                else if (!portCheckBox.isSelected() && ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((httpP.src_port == sPort) || (httpP.dst_port == dPort)) || ((String.valueOf(httpP.src_ip)).equals(sIp) && (String.valueOf(httpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                                else if ( (sPort == -1) && (dPort == -1) && (sIp).equals("") && (dIp).equals(""))
+                                    cp5.populate_table(p, m, x+1);
+                                
                             continue;
-                        }           
-                    
+                            }           
+                        }
          
                          if (tcpRadioButton.isSelected())
                          {
+ 
                               if(cp5.isTcp(p))
-                            {
-                                if ((sPort != -1) && (dPort != -1))
+                             {
+                                TCPPacket tcpP = (TCPPacket)p;
+
+                                 if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
                                 {
-                                    if((((TCPPacket)p).src_port == sPort) && (((TCPPacket)p).dst_port == dPort))
-                                    cp5.populate_table(p, m,x+1);
+                                    if ( ((tcpP.src_port == sPort) && (tcpP.dst_port == dPort)) && ((String.valueOf(tcpP.src_ip)).equals(sIp) && (String.valueOf(tcpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
                                 }
-                                else if (sPort == -1 && dPort != -1)
-                                {
-                                    if(((TCPPacket)p).dst_port == dPort)
-                                    cp5.populate_table(p, m,x+1);
+                                else if (!portCheckBox.isSelected() && !ipCheckBox.isSelected() && piCheckBox.isSelected())
+                                {        if ( ((tcpP.src_port == sPort) || (tcpP.dst_port == dPort)) && ((String.valueOf(tcpP.src_ip)).equals(sIp) || (String.valueOf(tcpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
                                 }
-                                else if (sPort != -1 && dPort == -1)
-                                {
-                                    if(((TCPPacket)p).src_port == sPort)
-                                    cp5.populate_table(p, m,x+1);
+                                else if (!portCheckBox.isSelected() && !ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((tcpP.src_port == sPort) || (tcpP.dst_port == dPort)) || ((String.valueOf(tcpP.src_ip)).equals(sIp) || (String.valueOf(tcpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
                                 }
-                                else
-                                    cp5.populate_table(p, m,x+1);
-                            }
-                            continue;
+                                else if (portCheckBox.isSelected() && !ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((tcpP.src_port == sPort) && (tcpP.dst_port == dPort)) || ((String.valueOf(tcpP.src_ip)).equals(sIp) || (String.valueOf(tcpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                                else if (!portCheckBox.isSelected() && ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((tcpP.src_port == sPort) || (tcpP.dst_port == dPort)) || ((String.valueOf(tcpP.src_ip)).equals(sIp) && (String.valueOf(tcpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                                else if ( (sPort == -1) && (dPort == -1) && (sIp).equals("") && (dIp).equals(""))
+                                    cp5.populate_table(p, m, x+1);
+                                
+                                continue;
+                            }    
                          }
                          
                          if (udpRadioButton.isSelected())
                          {
                               if(cp5.isUdp(p))
                             {
-                                if ((sPort != -1) && (dPort != -1))
+                               UDPPacket udpP = (UDPPacket)p;
+
+                                if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
                                 {
-                                    if((((UDPPacket)p).src_port == sPort) && (((UDPPacket)p).dst_port == dPort))
-                                    cp5.populate_table(p, m,x+1);
+                                    if ( ((udpP.src_port == sPort) && (udpP.dst_port == dPort)) && ((String.valueOf(udpP.src_ip)).equals(sIp) && (String.valueOf(udpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
                                 }
-                                else if (sPort == -1 && dPort != -1)
-                                {
-                                    if(((UDPPacket)p).dst_port == dPort)
-                                    cp5.populate_table(p, m,x+1);
+                                else if (!portCheckBox.isSelected() && !ipCheckBox.isSelected() && piCheckBox.isSelected())
+                                {        if ( ((udpP.src_port == sPort) || (udpP.dst_port == dPort)) && ((String.valueOf(udpP.src_ip)).equals(sIp) || (String.valueOf(udpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
                                 }
-                                else if (sPort != -1 && dPort == -1)
-                                {
-                                    if(((UDPPacket)p).src_port == sPort)
-                                    cp5.populate_table(p, m,x+1);
+                                else if (!portCheckBox.isSelected() && !ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((udpP.src_port == sPort) || (udpP.dst_port == dPort)) || ((String.valueOf(udpP.src_ip)).equals(sIp) || (String.valueOf(udpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
                                 }
-                                else
-                                    cp5.populate_table(p, m,x+1);
+                                else if (portCheckBox.isSelected() && !ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((udpP.src_port == sPort) && (udpP.dst_port == dPort)) || ((String.valueOf(udpP.src_ip)).equals(sIp) || (String.valueOf(udpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                                else if (!portCheckBox.isSelected() && ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((udpP.src_port == sPort) || (udpP.dst_port == dPort)) || ((String.valueOf(udpP.src_ip)).equals(sIp) && (String.valueOf(udpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                                else if ( (sPort == -1) && (dPort == -1) && (sIp).equals("") && (dIp).equals(""))
+                                    cp5.populate_table(p, m, x+1);
+                                
+                                continue;
                             }
                               
-                              continue;
+                              
                          }
                          
                          if (icmpRadioButton.isSelected())
-                             
-                             
-                             if(cp5.isIcmp(p)) cp5.populate_table(p,m,x+1);
+                           if(cp5.isUdp(p))
+                            {
+                               ICMPPacket icmpP = (ICMPPacket)p;
+
+                                if (((String.valueOf(icmpP.src_ip)).equals(sIp) && (String.valueOf(icmpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                
+                                else if (((String.valueOf(icmpP.src_ip)).equals(sIp) || (String.valueOf(icmpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+
+                                else if ((sIp).equals("") && (dIp).equals(""))
+                                    cp5.populate_table(p, m, x+1);
+                                
+                            }
                     }
                          
-                }
-
+                
+               
             dispose();
     }//GEN-LAST:event_setFilterButtonActionPerformed
+
+    
 
     private void icmpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_icmpRadioButtonActionPerformed
         // TODO add your handling code here:
@@ -358,6 +392,18 @@ public class sessionFilter extends javax.swing.JFrame {
         sportTextField.setEditable(true);
         dportTextField.setEditable(true);
     }//GEN-LAST:event_udpRadioButtonActionPerformed
+
+    private void ipCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ipCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ipCheckBoxActionPerformed
+
+    private void portCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_portCheckBoxActionPerformed
+
+    private void piCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_piCheckBoxActionPerformed
 
 
     /**
@@ -402,7 +448,10 @@ public class sessionFilter extends javax.swing.JFrame {
     private javax.swing.JTextField dportTextField;
     private javax.swing.JRadioButton httpRadioButton;
     private javax.swing.JRadioButton icmpRadioButton;
+    private javax.swing.JCheckBox ipCheckBox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -410,6 +459,9 @@ public class sessionFilter extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JCheckBox piCheckBox;
+    private javax.swing.JCheckBox portCheckBox;
     private javax.swing.JButton setFilterButton;
     private javax.swing.JTextField sipTextField;
     private javax.swing.JTextField sportTextField;
