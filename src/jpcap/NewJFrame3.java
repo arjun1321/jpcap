@@ -1,7 +1,6 @@
 
 package jpcap;
 
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import java.awt.Font;
 import java.awt.event.*;
 import java.io.*;
@@ -12,7 +11,7 @@ import javax.swing.event.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.*;
 import jpcap.packet.Packet;
-import org.jdesktop.xswingx.PromptSupport;
+
 
 
 public class NewJFrame3 extends javax.swing.JFrame {  
@@ -57,7 +56,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
             }
         });
 
-        PromptSupport.setPrompt("Save As...", saveTextField); //prompt for save text field.
+
         
         NetworkInterface   [] devices = JpcapCaptor.getDeviceList();
  
@@ -104,7 +103,6 @@ public class NewJFrame3 extends javax.swing.JFrame {
         stopButton = new javax.swing.JButton();
         loadButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        saveTextField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -133,6 +131,20 @@ public class NewJFrame3 extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jpcap/images/light_fawn_and_blue_waves-1280x800.jpg"))); // NOI18N
         jLabel2.setText("jLabel2");
+
+        jFrame1.getContentPane().setLayout(new java.awt.BorderLayout());
+
+        jFrame2.getContentPane().setLayout(new java.awt.BorderLayout());
+
+        jFrame3.getContentPane().setLayout(new java.awt.BorderLayout());
+
+        jDialog1.getContentPane().setLayout(new java.awt.BorderLayout());
+
+        jDialog2.getContentPane().setLayout(new java.awt.BorderLayout());
+
+        jDialog3.getContentPane().setLayout(new java.awt.BorderLayout());
+
+        jDialog4.getContentPane().setLayout(new java.awt.BorderLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -168,7 +180,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
                 saveButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(673, 440, -1, 20));
+        getContentPane().add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 420, -1, 20));
 
         jLabel6.setForeground(new java.awt.Color(204, 204, 255));
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 20, 20));
@@ -207,14 +219,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
         getContentPane().add(loadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 140, -1));
 
         jLabel4.setText("Save session");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 420, 80, -1));
-
-        saveTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveTextFieldActionPerformed(evt);
-            }
-        });
-        getContentPane().add(saveTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 440, 70, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 420, 80, 20));
 
         totalCountLabel.setText(packet_count);
         getContentPane().add(totalCountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 390, 40, -1));
@@ -364,7 +369,6 @@ public class NewJFrame3 extends javax.swing.JFrame {
             try {
                 
                 File fileToSave = fileChooser.getSelectedFile();
-                System.out.println(fileToSave);
                 
                 FileWriter writer = new FileWriter("output.txt"); 
                 BufferedWriter bw = new BufferedWriter(writer);
@@ -390,7 +394,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
 
     
     private void captureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_captureButtonActionPerformed
-            PromptSupport.setPrompt("Save as", saveTextField);
+
             int c = interfaceListCombo.getSelectedIndex();
 
             if (c == 0)
@@ -429,7 +433,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
     }//GEN-LAST:event_interfaceListComboActionPerformed
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-        PromptSupport.setPrompt("Save as", saveTextField);
+
         captureButton.setEnabled(true);
         cancelled = true;
         stopButton.setEnabled(false);
@@ -533,10 +537,6 @@ public class NewJFrame3 extends javax.swing.JFrame {
     }
     
     
-    private void saveTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTextFieldActionPerformed
-
-    }//GEN-LAST:event_saveTextFieldActionPerformed
-
     private void filterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterButtonActionPerformed
 
        sessionFilter sf = new sessionFilter(obj,m,httpCountLabel,tcpCountLabel,udpCountLabel,icmpCountLabel,totalCountLabel,jLabel13); //new instance of sessionFilter frame, This provides access to session filter options
@@ -685,10 +685,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
         
         
         NewJFrame3 nf1 = new NewJFrame3();
-        
-        PromptSupport.setPrompt("Save as", nf1.saveTextField);
-
-        
+           
         NetworkInterface   [] devices = JpcapCaptor.getDeviceList();
  
             for (NetworkInterface device : devices) {
@@ -784,7 +781,6 @@ public class NewJFrame3 extends javax.swing.JFrame {
     private javax.swing.JButton loadButton;
     private javax.swing.JButton resetFilterButton;
     private javax.swing.JButton saveButton;
-    private javax.swing.JTextField saveTextField;
     private javax.swing.JButton stopButton;
     public javax.swing.JLabel tcpCountLabel;
     private javax.swing.JRadioButton tcpRadioButtonC;
