@@ -5,10 +5,13 @@
 package jpcap;
 
 import java.awt.Font;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +24,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import jpcap.packet.ICMPPacket;
 import jpcap.packet.Packet;
 import jpcap.packet.TCPPacket;
@@ -46,7 +51,13 @@ public class NewJFrame3 extends javax.swing.JFrame {
         
         initComponents();
         m = (DefaultTableModel) jTable1.getModel();
-
+  resizeColumns();
+    addComponentListener(new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            resizeColumns();
+        }
+    });
         
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
         @Override
@@ -60,7 +71,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
                     int Pckno = (Integer)( jTable1.getModel().getValueAt(sel,0));
                     Packet p = (Packet) obj.get(Pckno-1);  //the packet corresponding to the row index is selected
                     
-                    populate_text(p);                   //populate_text method is called to display the details of the selected packet
+                    cp0.populate_text(p,Pckno,jTextArea1);                   //populate_text method is called to display the details of the selected packet
                 }
             }
         });
@@ -73,7 +84,19 @@ public class NewJFrame3 extends javax.swing.JFrame {
             interfaceListCombo.addItem(device.name);    //add the interface list to the drop down menu
         }  
     }
-    
+    float[] columnWidthPercentage = {10.0f, 10.0f, 25.0f, 25.0f, 10.0f, 10.0f, 10.0f};
+
+private void resizeColumns() {
+    int tW = jTable1.getWidth();
+    TableColumn column;
+    TableColumnModel jTableColumnModel = jTable1.getColumnModel();
+    int cantCols = jTableColumnModel.getColumnCount();
+    for (int i = 0; i < cantCols; i++) {
+        column = jTableColumnModel.getColumn(i);
+        int pWidth = Math.round(columnWidthPercentage[i] * tW);
+        column.setPreferredWidth(pWidth);
+    }
+}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -337,12 +360,14 @@ public class NewJFrame3 extends javax.swing.JFrame {
             
             //object is written to the drive
             try {
-                FileWriter writer = new FileWriter("C:\\"+"output.txt"); 
+                
+                FileWriter writer = new FileWriter("output.txt"); 
                 BufferedWriter bw = new BufferedWriter(writer);
                 for(int i = 0; i < obj.size(); i++) {
                 bw.write(String.valueOf(obj.get(i)));
                 bw.newLine();
                 }
+                bw.close();
                 writer.close();
                 
                 FileOutputStream fos = new FileOutputStream("C:\\"+filename+".txt"); 
@@ -531,121 +556,8 @@ public class NewJFrame3 extends javax.swing.JFrame {
     }//GEN-LAST:event_resetFilterButtonActionPerformed
 
 
-    //method to populate the text box with details of a selected packet
     
-    private void populate_text(Packet p) {
 
-        jTextArea1.setText(null);//clear text area before populating
-        
-        if (p instanceof TCPPacket){
-
-
-            TCPPacket tcpPckt =(TCPPacket)p ;
-            
-            //assign packet details to variables
-            String srcIP = String.valueOf(tcpPckt.src_ip);
-            String destIP = String.valueOf(tcpPckt.dst_ip);
-            String protocol = String.valueOf(tcpPckt.protocol);
-            int srcPort = tcpPckt.src_port;
-            int dstPort = tcpPckt.dst_port;
-            
-            byte[] header = tcpPckt.header;
-            int version = tcpPckt.version;
-            jTextArea1.append("Header: ");
-            for (int k = 0; k < header.length; k++)
-            {
-             jTextArea1.append((header[k] +" "));
-            }
-              
-            //print out the details
-            jTextArea1.append("\nSource ip: "+srcIP+ "\n");
-            jTextArea1.append("Destination ip: "+destIP+ "\n");
-            jTextArea1.append("Source port: "+srcPort+ "\n");
-            jTextArea1.append("Destination port: "+dstPort+ "\n");
-            jTextArea1.append("Protocol: "+protocol+ "\n\n");
-            jTextArea1.append("Data: ");
-            byte[] data = (tcpPckt.data);
-            
-            String dataS = new String(data);
-            //boolean test = CharMatcher.ASCII.matchesAllOf(dataS);
-            if (cp0.isHttp(p))
-                jTextArea1.append(dataS);
-            
-            else{
-            for (int i = 0; i < data.length; i++)
-            {
-              jTextArea1.append((data[i] +" "));
-            }
-            }
-            jTextArea1.append("\n");
-        }
-        
-        else if (p instanceof UDPPacket){
-            
-            UDPPacket udpPckt =(UDPPacket)p ;
-            
-            String srcIP = String.valueOf(udpPckt.src_ip);
-            String destIP = String.valueOf(udpPckt.dst_ip);
-            String protocol = String.valueOf(udpPckt.protocol);
-            int srcPort = udpPckt.src_port;
-            int dstPort = udpPckt.dst_port;
-            
-            byte[] header = udpPckt.header;
-            jTextArea1.append("Header: ");
-            for (int k = 0; k < header.length; k++)
-            {
-              jTextArea1.append(String.valueOf(header[k] +" "));
-            }
-              
-            jTextArea1.append("\nSource ip: "+srcIP+ "\n");
-            jTextArea1.append("Destination ip: "+destIP+ "\n");
-            jTextArea1.append("Source port: "+srcPort+ "\n");
-            jTextArea1.append("Destination port: "+dstPort+ "\n");
-            jTextArea1.append("Protocol: "+protocol+ "\n\n");
-            
-            byte[] data = (udpPckt.data);
-            jTextArea1.append("Data: ");
-            for (int i = 0; i < data.length; i++)
-            {
-              jTextArea1.append(String.valueOf(data[i] +" "));
-            }
-            
-            jTextArea1.append("\n");
-        }
-        else if (p instanceof ICMPPacket){
-            
-            ICMPPacket icmpPckt =(ICMPPacket)p ;
-            
-            String srcIP = String.valueOf(icmpPckt.src_ip);
-            String destIP = String.valueOf(icmpPckt.dst_ip);
-            String protocol = String.valueOf(icmpPckt.protocol);
-            int sequence = icmpPckt.seq;
-            
-            byte[] header = icmpPckt.header;
-            jTextArea1.append("Header: ");
-            for (int k = 0; k < header.length; k++)
-            {
-              jTextArea1.append(String.valueOf(header[k] +" "));
-            }
-              
-            jTextArea1.append("\nSource ip: "+srcIP+ "\n");
-            jTextArea1.append("Destination ip: "+destIP+ "\n");
-            jTextArea1.append("Sequence: "+sequence+ "\n");
-            jTextArea1.append("Protocol: "+protocol+ "\n\n");
-            
-            byte[] data = (icmpPckt.data);
-            jTextArea1.append("Data: ");
-            for (int i = 0; i < data.length; i++)
-            {
-              jTextArea1.append(String.valueOf(data[i] +" "));
-            }
-            
-            jTextArea1.append("\n");
-        }
-
-        jTextArea1.setCaretPosition(0);
-    }
-    
     //New thread to carry out the capture process.
         class PacketCaptureWorker extends Thread {
 
