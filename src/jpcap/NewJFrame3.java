@@ -333,8 +333,18 @@ public class NewJFrame3 extends javax.swing.JFrame {
                                                     
             String filename = saveTextField.getText(); //entered filename is stored to a string variable
 
+            
+            
             //object is written to the drive
             try {
+                FileWriter writer = new FileWriter("C:\\"+"output.txt"); 
+                BufferedWriter bw = new BufferedWriter(writer);
+                for(int i = 0; i < obj.size(); i++) {
+                bw.write(String.valueOf(obj.get(i)));
+                bw.newLine();
+                }
+                writer.close();
+                
                 FileOutputStream fos = new FileOutputStream("C:\\"+filename+".txt"); 
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(obj);
