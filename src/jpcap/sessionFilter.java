@@ -257,8 +257,13 @@ public class sessionFilter extends javax.swing.JFrame {
                             if(cp5.isHttp(p)) 
                             {
                                 TCPPacket httpP = (TCPPacket)p;
+                                if ( (sPort == -1) && (dPort == -1) && (sIp).equals("") && (dIp).equals(""))
+                                {
+                                    System.out.println("test");
+                                    cp5.populate_table(p, m, x+1);
+                                }
                                 
-                                if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
+                                else if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
                                 {
                                     if ( ((httpP.src_port == sPort) && (httpP.dst_port == dPort)) && ((String.valueOf(httpP.src_ip)).equals(sIp) && (String.valueOf(httpP.dst_ip)).equals(dIp)))
                                         cp5.populate_table(p, m, x+1);
@@ -292,8 +297,14 @@ public class sessionFilter extends javax.swing.JFrame {
                               if(cp5.isTcp(p))
                              {
                                 TCPPacket tcpP = (TCPPacket)p;
-
-                                 if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
+                                
+                                if ( (sPort == -1) && (dPort == -1) && (sIp).equals("") && (dIp).equals(""))
+                                {
+                                    System.out.println("test");
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                               
+                                else if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
                                 {
                                     if ( ((tcpP.src_port == sPort) && (tcpP.dst_port == dPort)) && ((String.valueOf(tcpP.src_ip)).equals(sIp) && (String.valueOf(tcpP.dst_ip)).equals(dIp)))
                                         cp5.populate_table(p, m, x+1);
@@ -303,8 +314,9 @@ public class sessionFilter extends javax.swing.JFrame {
                                         cp5.populate_table(p, m, x+1);
                                 }
                                 else if (!portCheckBox.isSelected() && !ipCheckBox.isSelected() && !piCheckBox.isSelected())
-                                {    if ( ((tcpP.src_port == sPort) || (tcpP.dst_port == dPort)) || ((String.valueOf(tcpP.src_ip)).equals(sIp) || (String.valueOf(tcpP.dst_ip)).equals(dIp)))
-                                    cp5.populate_table(p, m, x+1);
+                                {     System.out.println(sPort);
+                                    if ( ((tcpP.src_port == sPort) || (tcpP.dst_port == dPort)) || ((String.valueOf(tcpP.src_ip)).equals(sIp) || (String.valueOf(tcpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
                                 }
                                 else if (portCheckBox.isSelected() && !ipCheckBox.isSelected() && !piCheckBox.isSelected())
                                 {    if ( ((tcpP.src_port == sPort) && (tcpP.dst_port == dPort)) || ((String.valueOf(tcpP.src_ip)).equals(sIp) || (String.valueOf(tcpP.dst_ip)).equals(dIp)))
@@ -314,8 +326,6 @@ public class sessionFilter extends javax.swing.JFrame {
                                 {    if ( ((tcpP.src_port == sPort) || (tcpP.dst_port == dPort)) || ((String.valueOf(tcpP.src_ip)).equals(sIp) && (String.valueOf(tcpP.dst_ip)).equals(dIp)))
                                     cp5.populate_table(p, m, x+1);
                                 }
-                                else if ( (sPort == -1) && (dPort == -1) && (sIp).equals("") && (dIp).equals(""))
-                                    cp5.populate_table(p, m, x+1);
                                 
                                 continue;
                             }    
@@ -327,7 +337,12 @@ public class sessionFilter extends javax.swing.JFrame {
                             {
                                UDPPacket udpP = (UDPPacket)p;
 
-                                if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
+                               if ( (sPort == -1) && (dPort == -1) && (sIp).equals("") && (dIp).equals(""))
+                                {
+                                    System.out.println("test");
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                               else if (portCheckBox.isSelected() && ipCheckBox.isSelected() && piCheckBox.isSelected() )
                                 {
                                     if ( ((udpP.src_port == sPort) && (udpP.dst_port == dPort)) && ((String.valueOf(udpP.src_ip)).equals(sIp) && (String.valueOf(udpP.dst_ip)).equals(dIp)))
                                         cp5.populate_table(p, m, x+1);
@@ -358,24 +373,42 @@ public class sessionFilter extends javax.swing.JFrame {
                          }
                          
                          if (icmpRadioButton.isSelected())
-                           if(cp5.isUdp(p))
+                           if(cp5.isIcmp(p))
                             {
                                ICMPPacket icmpP = (ICMPPacket)p;
-
-                                if (((String.valueOf(icmpP.src_ip)).equals(sIp) && (String.valueOf(icmpP.dst_ip)).equals(dIp)))
+                               
+                               if ((sIp).equals("") && (dIp).equals(""))
+                                {
                                     cp5.populate_table(p, m, x+1);
+                                }
+                              
+                               else if (ipCheckBox.isSelected() && piCheckBox.isSelected() )
+                                {
+                                    if (  ((String.valueOf(icmpP.src_ip)).equals(sIp) && (String.valueOf(icmpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
+                                }
+                                else if ( !ipCheckBox.isSelected() && piCheckBox.isSelected())
+                                {        if ( ((String.valueOf(icmpP.src_ip)).equals(sIp) || (String.valueOf(icmpP.dst_ip)).equals(dIp)))
+                                        cp5.populate_table(p, m, x+1);
+                                }
+                                else if ( !ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((String.valueOf(icmpP.src_ip)).equals(sIp) || (String.valueOf(icmpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                                else if (!ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((String.valueOf(icmpP.src_ip)).equals(sIp) || (String.valueOf(icmpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
+                                else if (ipCheckBox.isSelected() && !piCheckBox.isSelected())
+                                {    if ( ((String.valueOf(icmpP.src_ip)).equals(sIp) && (String.valueOf(icmpP.dst_ip)).equals(dIp)))
+                                    cp5.populate_table(p, m, x+1);
+                                }
                                 
-                                else if (((String.valueOf(icmpP.src_ip)).equals(sIp) || (String.valueOf(icmpP.dst_ip)).equals(dIp)))
-                                    cp5.populate_table(p, m, x+1);
-
-                                else if ((sIp).equals("") && (dIp).equals(""))
-                                    cp5.populate_table(p, m, x+1);
                                 
                             }
+
                     }
-                         
-                
-               
+
             dispose();
     }//GEN-LAST:event_setFilterButtonActionPerformed
 
@@ -385,6 +418,9 @@ public class sessionFilter extends javax.swing.JFrame {
         // TODO add your handling code here:
         sportTextField.setEditable(false);
         dportTextField.setEditable(false);
+        portCheckBox.setEnabled(false);
+        piCheckBox.setEnabled(false);
+              
     }//GEN-LAST:event_icmpRadioButtonActionPerformed
 
     private void udpRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpRadioButtonActionPerformed
