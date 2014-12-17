@@ -1,77 +1,58 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package jpcap;
 
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import java.awt.Font;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.io.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import jpcap.packet.ICMPPacket;
+import java.util.*;
+import java.util.logging.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.*;
 import jpcap.packet.Packet;
-import jpcap.packet.TCPPacket;
-import jpcap.packet.UDPPacket;
 import org.jdesktop.xswingx.PromptSupport;
 
 
-/**
- *
- * @author DELL
- */
 public class NewJFrame3 extends javax.swing.JFrame {  
         
     ArrayList obj = new ArrayList();  //declartion of the ArrayList to store packets.
     DefaultTableModel m;
-    CapturePackets cp0 = new CapturePackets(); //create new instance of the CapturePackets class
+    UpdateGUI guiObject = new UpdateGUI(); //create new instance of the CapturePackets class
     volatile boolean cancelled = false;     //the flag to stop the while loop that executes the capture of packets
     String packet_count = "0";           //the value is used in the label to show the total number of packets captured
     int pck_count;
 
     public NewJFrame3() {   
-  
-        
+
         initComponents();
         m = (DefaultTableModel) jTable1.getModel();
-  resizeColumns();
-    addComponentListener(new ComponentAdapter() {
+        
+        resizeColumns();
+        
+        addComponentListener(new ComponentAdapter() {
+            
         @Override
-        public void componentResized(ComponentEvent e) {
-            resizeColumns();
-        }
-    });
+            public void componentResized(ComponentEvent e) {
+                resizeColumns();
+            }
+        });
+        
+        
         
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
         @Override
             public void valueChanged(ListSelectionEvent e) { //action listner for the table to display captured packet details
                 
                 int sel = (jTable1.getSelectedRow()); //sel variable stores the index of the selected row
-                
-       
+
                 if ((! e.getValueIsAdjusting()) && (sel != -1)) 
                 {
                     int Pckno = (Integer)( jTable1.getModel().getValueAt(sel,0));
                     Packet p = (Packet) obj.get(Pckno-1);  //the packet corresponding to the row index is selected
-                    
-                    cp0.populate_text(p,Pckno,jTextArea1);                   //populate_text method is called to display the details of the selected packet
+
+                    guiObject.populate_text(p,Pckno,jTextArea1);                   //populate_text method is called to display the details of the selected packet
                 }
             }
         });
@@ -84,18 +65,22 @@ public class NewJFrame3 extends javax.swing.JFrame {
             interfaceListCombo.addItem(device.name);    //add the interface list to the drop down menu
         }  
     }
+    
     float[] columnWidthPercentage = {10.0f, 10.0f, 25.0f, 25.0f, 10.0f, 10.0f, 10.0f};
 
-private void resizeColumns() {
-    int tW = jTable1.getWidth();
-    TableColumn column;
-    TableColumnModel jTableColumnModel = jTable1.getColumnModel();
-    int cantCols = jTableColumnModel.getColumnCount();
-    for (int i = 0; i < cantCols; i++) {
-        column = jTableColumnModel.getColumn(i);
-        int pWidth = Math.round(columnWidthPercentage[i] * tW);
-        column.setPreferredWidth(pWidth);
-    }
+    private void resizeColumns() {
+        
+        int tW = jTable1.getWidth();
+        TableColumn column;
+        TableColumnModel jTableColumnModel = jTable1.getColumnModel();
+        int cantCols = jTableColumnModel.getColumnCount();
+        
+        for (int i = 0; i < cantCols; i++) {
+            
+            column = jTableColumnModel.getColumn(i);
+            int pWidth = Math.round(columnWidthPercentage[i] * tW);
+            column.setPreferredWidth(pWidth);
+        }
 }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -109,6 +94,7 @@ private void resizeColumns() {
         jDialog2 = new javax.swing.JDialog();
         jDialog3 = new javax.swing.JDialog();
         jDialog4 = new javax.swing.JDialog();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         saveButton = new javax.swing.JButton();
@@ -135,7 +121,6 @@ private void resizeColumns() {
         icmpCountLabel = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         udpRadioButtonC = new javax.swing.JRadioButton();
-        httpRadioButtonC = new javax.swing.JRadioButton();
         icmpRadioButtonC = new javax.swing.JRadioButton();
         tcpRadioButtonC = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
@@ -143,6 +128,8 @@ private void resizeColumns() {
         jLabel10 = new javax.swing.JLabel();
         resetFilterButton = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jpcap/images/light_fawn_and_blue_waves-1280x800.jpg"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -230,7 +217,7 @@ private void resizeColumns() {
         getContentPane().add(saveTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 440, 70, -1));
 
         totalCountLabel.setText(packet_count);
-        getContentPane().add(totalCountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 390, -1, -1));
+        getContentPane().add(totalCountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 390, 40, -1));
 
         jLabel7.setText("Packets captured");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, -1, -1));
@@ -286,37 +273,32 @@ private void resizeColumns() {
         jLabel16.setText("Protocol:");
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 90, -1, -1));
 
+        buttonGroup1.add(udpRadioButtonC);
         udpRadioButtonC.setText("UDP");
         udpRadioButtonC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 udpRadioButtonCActionPerformed(evt);
             }
         });
-        getContentPane().add(udpRadioButtonC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 130, -1, 20));
+        getContentPane().add(udpRadioButtonC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 110, -1, 20));
 
-        httpRadioButtonC.setText("HTTP");
-        httpRadioButtonC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                httpRadioButtonCActionPerformed(evt);
-            }
-        });
-        getContentPane().add(httpRadioButtonC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 90, -1, 20));
-
+        buttonGroup1.add(icmpRadioButtonC);
         icmpRadioButtonC.setText("ICMP");
         icmpRadioButtonC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 icmpRadioButtonCActionPerformed(evt);
             }
         });
-        getContentPane().add(icmpRadioButtonC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 150, -1, 20));
+        getContentPane().add(icmpRadioButtonC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 130, -1, 20));
 
-        tcpRadioButtonC.setText("TCP");
+        buttonGroup1.add(tcpRadioButtonC);
+        tcpRadioButtonC.setText("TCP/HTTP");
         tcpRadioButtonC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tcpRadioButtonCActionPerformed(evt);
             }
         });
-        getContentPane().add(tcpRadioButtonC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 110, -1, 20));
+        getContentPane().add(tcpRadioButtonC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 90, 80, 20));
 
         jLabel5.setText("capture interval:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 190, -1, 20));
@@ -347,6 +329,17 @@ private void resizeColumns() {
         jLabel11.setFont(f1.deriveFont(f1.getStyle() | Font.BOLD));
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 290, -1, -1));
 
+        jButton1.setText("reset");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 160, 60, 20));
+
+        jLabel13.setText("");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 470, 150, -1));
+
         setSize(new java.awt.Dimension(761, 750));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -354,12 +347,24 @@ private void resizeColumns() {
  
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
                                                     
-            String filename = saveTextField.getText(); //entered filename is stored to a string variable
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify a file to save");   
+            
+            FileNameExtensionFilter ft = new FileNameExtensionFilter( "Text Files", "txt" );
+            fileChooser.addChoosableFileFilter( ft );
+            
+            int userSelection = fileChooser.showSaveDialog(this);
+            
+            
+ 
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                
 
-            
-            
             //object is written to the drive
             try {
+                
+                File fileToSave = fileChooser.getSelectedFile();
+                System.out.println(fileToSave);
                 
                 FileWriter writer = new FileWriter("output.txt"); 
                 BufferedWriter bw = new BufferedWriter(writer);
@@ -370,7 +375,7 @@ private void resizeColumns() {
                 bw.close();
                 writer.close();
                 
-                FileOutputStream fos = new FileOutputStream("C:\\"+filename+".txt"); 
+                FileOutputStream fos = new FileOutputStream(fileToSave + ".txt"); 
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(obj);
                 oos.close();
@@ -379,6 +384,7 @@ private void resizeColumns() {
             }
             catch (IOException ex) {
                 Logger.getLogger(NewJFrame3.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -393,7 +399,6 @@ private void resizeColumns() {
             }
             else{
             filterButton.setEnabled(false);
-            httpRadioButtonC.setEnabled(false);
             tcpRadioButtonC.setEnabled(false);
             udpRadioButtonC.setEnabled(false);
             icmpRadioButtonC.setEnabled(false);
@@ -401,10 +406,8 @@ private void resizeColumns() {
             captureButton.setEnabled(false); //once a capture is started the button is disabled
             stopButton.setEnabled(true);       //the stop buttn is enabled
             //variables from the CapturePackets to monitor the number of packets captured. all initialized to 0.
-            cp0.tcpCount = 0;
-            cp0.udpCount = 0;
-            cp0.httpCount = 0;
-            cp0.icmpCount = 0;
+            resetCount();
+            jTextArea1.setText(null);//clear text area before populating
             pck_count = 0;
             PacketCaptureWorker pcw = new PacketCaptureWorker();//instance of thread to capture packets
             
@@ -431,11 +434,17 @@ private void resizeColumns() {
         cancelled = true;
         stopButton.setEnabled(false);
         filterButton.setEnabled(true);
-        httpRadioButtonC.setEnabled(true);
         tcpRadioButtonC.setEnabled(true);
         udpRadioButtonC.setEnabled(true);
         icmpRadioButtonC.setEnabled(true);
         intervalTextField.setEnabled(true);
+        int sum = 0;
+        for (int i = 0; i < jTable1.getRowCount();i++)
+        {
+  
+            sum = sum + (Integer)jTable1.getModel().getValueAt(i,6);
+        }
+        jLabel13.setText("total bytes: "+String.valueOf(sum));
         
     }//GEN-LAST:event_stopButtonActionPerformed
 
@@ -443,6 +452,8 @@ private void resizeColumns() {
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
 
         JFileChooser jfc = new JFileChooser();
+        FileNameExtensionFilter ft = new FileNameExtensionFilter( "Text Files", "txt" );
+        jfc.addChoosableFileFilter( ft );
         int a = jfc.showOpenDialog(this);
               
         FileReader reader = null;
@@ -472,24 +483,23 @@ private void resizeColumns() {
                     }
                 }  //remove all rows (if any) before populating table
                 
-                cp0.tcpCount = 0;
-                cp0.udpCount = 0;
-                cp0.httpCount = 0;
-                cp0.icmpCount = 0;
+                resetCount();
                 pck_count = 0;
                 
                 for (Object obj1 : obj) {
                     pck_count++;
-                    cp0.populate_table((Packet) obj1, m,pck_count); //populate_table method is used to display captured packets
+                    guiObject.populate_table((Packet) obj1, m,pck_count); //populate_table method is used to display captured packets
                 }
 
-             totalCountLabel.setText(String.valueOf(cp0.udpCount+cp0.tcpCount+cp0.httpCount+cp0.icmpCount));  //update Jlabel showing number of packets captured
-             udpCountLabel.setText(String.valueOf(cp0.udpCount));
-             tcpCountLabel.setText(String.valueOf(cp0.tcpCount));
-             httpCountLabel.setText(String.valueOf(cp0.httpCount));
-             icmpCountLabel.setText(String.valueOf(cp0.icmpCount));
+             updateCount(guiObject.httpCount,guiObject.tcpCount,guiObject.udpCount,guiObject.icmpCount);
              filterButton.setEnabled(true);
              
+             int sum = 0;
+                for (int i = 0; i < m.getRowCount();i++)
+                {
+                    sum = sum + (Integer)(m.getValueAt(i, 6));
+                }
+                jLabel13.setText("total bytes: "+String.valueOf(sum));
                 
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(NewJFrame3.class.getName()).log(Level.SEVERE, null, ex);
@@ -503,13 +513,33 @@ private void resizeColumns() {
 
     }//GEN-LAST:event_loadButtonActionPerformed
 
+    public void updateCount (int h,int t,int u,int i)
+    {
+        totalCountLabel.setText(String.valueOf(h+t+u+i));  //update Jlabel showing number of packets captured
+        udpCountLabel.setText(String.valueOf(u));
+        tcpCountLabel.setText(String.valueOf(t));
+        httpCountLabel.setText(String.valueOf(h));
+        icmpCountLabel.setText(String.valueOf(i));
+    
+    }
+    
+    public void resetCount()
+    {
+        guiObject.tcpCount = 0;
+        guiObject.udpCount = 0;
+        guiObject.httpCount = 0;
+        guiObject.icmpCount = 0;
+
+    }
+    
+    
     private void saveTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTextFieldActionPerformed
 
     }//GEN-LAST:event_saveTextFieldActionPerformed
 
     private void filterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterButtonActionPerformed
 
-       sessionFilter sf = new sessionFilter(obj,m); //new instance of sessionFilter frame, This provides access to session filter options
+       sessionFilter sf = new sessionFilter(obj,m,httpCountLabel,tcpCountLabel,udpCountLabel,icmpCountLabel,totalCountLabel,jLabel13); //new instance of sessionFilter frame, This provides access to session filter options
        sf.setVisible(true);
        resetFilterButton.setEnabled(true);
     }//GEN-LAST:event_filterButtonActionPerformed
@@ -517,10 +547,6 @@ private void resizeColumns() {
     private void udpRadioButtonCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpRadioButtonCActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_udpRadioButtonCActionPerformed
-
-    private void httpRadioButtonCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_httpRadioButtonCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_httpRadioButtonCActionPerformed
 
     private void icmpRadioButtonCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_icmpRadioButtonCActionPerformed
         // TODO add your handling code here:
@@ -547,13 +573,31 @@ private void resizeColumns() {
                     m.removeRow(i);
                 }
             }  //remove all rows (if any) before populating table
+        resetCount();
         
         for (int r = 0; r < obj.size(); r++)
         {
             Packet pr = (Packet)resObj.get(r);
-            cp0.populate_table(pr,m,r);
+            guiObject.populate_table(pr,m,r);
         }
+        
+        updateCount(guiObject.httpCount,guiObject.tcpCount,guiObject.udpCount,guiObject.icmpCount);
+        
+        int sum = 0;
+        
+        for (int i = 0; i < m.getRowCount();i++)
+        {
+            sum = sum + (Integer)(m.getValueAt(i, 6));
+        }
+
+        jLabel13.setText("total bytes: " + String.valueOf(sum));
     }//GEN-LAST:event_resetFilterButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        buttonGroup1.clearSelection();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     
@@ -574,11 +618,9 @@ private void resizeColumns() {
                     
                     //filters according to capture filters set.
                     if (tcpRadioButtonC.isSelected())
-                    {   captor.setFilter("tcp and ipv4 and !port 80", true);
+                    {   captor.setFilter("tcp", true);
                     }
-                    if (httpRadioButtonC.isSelected())
-                    {   captor.setFilter("tcp and port 80", true);
-                    }
+
                     if (udpRadioButtonC.isSelected())
                     {   captor.setFilter("udp", true);
                     }
@@ -618,13 +660,10 @@ private void resizeColumns() {
             @Override
             public void run() {
                 
-                cp0.populate_table(packets, m,count);            //populate the jtable, a row at a time
+                guiObject.populate_table(packets, m,count);            //populate the jtable, a row at a time
                 packet_count = String.valueOf(count);
-                totalCountLabel.setText(packet_count);              //update Jlabel showing number of packets captured
-                udpCountLabel.setText(String.valueOf(cp0.udpCount));
-                tcpCountLabel.setText(String.valueOf(cp0.tcpCount));
-                httpCountLabel.setText(String.valueOf(cp0.httpCount));
-                icmpCountLabel.setText(String.valueOf(cp0.icmpCount));
+                updateCount(guiObject.httpCount,guiObject.tcpCount,guiObject.udpCount,guiObject.icmpCount);              //update Jlabel showing number of packets captured
+                
             }
      
             });
@@ -707,14 +746,15 @@ private void resizeColumns() {
      
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton captureButton;
     private javax.swing.JButton filterButton;
-    private javax.swing.JLabel httpCountLabel;
-    private javax.swing.JRadioButton httpRadioButtonC;
-    private javax.swing.JLabel icmpCountLabel;
+    public javax.swing.JLabel httpCountLabel;
+    public javax.swing.JLabel icmpCountLabel;
     private javax.swing.JRadioButton icmpRadioButtonC;
     private javax.swing.JComboBox interfaceListCombo;
     private javax.swing.JTextField intervalTextField;
+    private javax.swing.JButton jButton1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialog2;
     private javax.swing.JDialog jDialog3;
@@ -726,6 +766,7 @@ private void resizeColumns() {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
@@ -745,10 +786,10 @@ private void resizeColumns() {
     private javax.swing.JButton saveButton;
     private javax.swing.JTextField saveTextField;
     private javax.swing.JButton stopButton;
-    private javax.swing.JLabel tcpCountLabel;
+    public javax.swing.JLabel tcpCountLabel;
     private javax.swing.JRadioButton tcpRadioButtonC;
-    private final javax.swing.JLabel totalCountLabel = new javax.swing.JLabel();
-    private javax.swing.JLabel udpCountLabel;
+    public final javax.swing.JLabel totalCountLabel = new javax.swing.JLabel();
+    public javax.swing.JLabel udpCountLabel;
     private javax.swing.JRadioButton udpRadioButtonC;
     // End of variables declaration//GEN-END:variables
     private SwingWorker<ArrayList,Integer> worker;
