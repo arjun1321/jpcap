@@ -61,7 +61,7 @@ public class NewJFrame3 extends javax.swing.JFrame {
         NetworkInterface   [] devices = JpcapCaptor.getDeviceList();
  
         for (NetworkInterface device : devices){ //initialize network device list for combobox
-            interfaceListCombo.addItem(device.name);    //add the interface list to the drop down menu
+            interfaceListCombo.addItem(device.description + " " + device.name);    //add the interface list to the drop down menu
         }  
     }
     
